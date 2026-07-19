@@ -4,7 +4,9 @@
 import express from "express";
 import path from "path";
 
-const WEB_PORT = Number(process.env.WEB_PORT ?? 8080);
+// Hosted platforms (Railway, Render…) inject PORT; WEB_PORT is the local dev
+// convention. PORT wins so the same script works in both worlds.
+const WEB_PORT = Number(process.env.PORT ?? process.env.WEB_PORT ?? 8080);
 const app = express();
 const dist = path.join(import.meta.dirname, "dist");
 app.use(express.static(dist));
