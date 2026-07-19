@@ -65,6 +65,12 @@ export class TxlineClient {
   }
 
   private loadOrCreateWallet(): Keypair {
+    // Hosted deploys have no persistent filesystem: the key is injected as an
+    // env var (JSON secret-key array) so the same subscribed wallet survives
+    // restarts instead of generating a fresh unfunded one every boot.
+    if (process.env.TXLINE_WALLET_JSON) {
+      return Keypair.fromSecretKey(Uint8Array.from(JSON.parse(process.env.TXLINE_WALLET_JSON)));
+    }
     const p = process.env.TXLINE_WALLET ?? path.join(STATE_DIR, "wallet.json");
     if (fs.existsSync(p)) {
       return Keypair.fromSecretKey(Uint8Array.from(JSON.parse(fs.readFileSync(p, "utf8"))));
