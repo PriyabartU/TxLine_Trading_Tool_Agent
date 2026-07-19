@@ -6,6 +6,7 @@ backend/.txline/
 # --- submission-private materials (kept out of the public repo) -------------
 TECHNICAL_BRIEF.md
 frontend/walkthrough-video/
+Script.txt
 
 # --- dependencies & build output --------------------------------------------
 node_modules/
