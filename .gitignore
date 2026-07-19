@@ -1,0 +1,25 @@
+# --- secrets: never commit -------------------------------------------------
+backend/.env
+backend/.devnet-keeper.json
+backend/.txline/
+
+# --- submission-private materials (kept out of the public repo) -------------
+TECHNICAL_BRIEF.md
+frontend/walkthrough-video/
+
+# --- dependencies & build output --------------------------------------------
+node_modules/
+frontend/dist/
+.anchor/
+test-ledger/
+
+# Anchor/cargo build artifacts — keep only the IDL and TS types, which the
+# backend loads at runtime (judges can run without installing the Rust chain).
+target/*
+!target/idl/
+!target/types/
+
+# --- editor / OS noise -------------------------------------------------------
+*.log
+.DS_Store
+Thumbs.db

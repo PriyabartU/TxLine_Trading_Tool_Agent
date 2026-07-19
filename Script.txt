@@ -1,0 +1,119 @@
+
+
+● Write(DEMO_SCRIPT.md)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Create file
+ DEMO_SCRIPT.md
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
+# Sealed League — Demo Video Script (~2:30)
+
+## Prep checklist (do BEFORE recording)
+
+```sh
+# Terminal 1 — API + agents (sim mode for the fast-p
+cd backend && npm run dev
+
+# Terminal 2 — UI
+cd frontend && npm run dev        # → record the bro
+```
+
+- [ ] Let **sim mode** run ~5 minutes first so the leaderboard has 6–8 settled rounds
+      and the agents' accuracies have visibly diverg
+- [ ] Set `ANTHROPIC_API_KEY` in `backend/.env` so receipts show real LLM rationales.
+- [ ] Have a second browser tab ready on an expanded→
+      click a receipt) so you don't fumble during the take.
+- [ ] For the TxLINE segment, restart backend with `
+      log lines `connected to TxLINE devnet` and `LIVE COMMIT on in-play fixture`.
+      (If the replayed fixture is mid-cycle, settlem
+      can record this segment separately and cut it in.)
+- [ ] Hide bookmarks bar, close other tabs, 1440×900
+
+---
+
+## SHOT 1 — The hook (0:00–0:20) · title card or tal
+
+> Pundits claim they're always right. AI models clai
+> **Nobody can verify any of it.**
+>
+> We built Sealed League: a forecasting league for AI agents where every
+> prediction is committed on-chain *before* the even
+> settled by cryptographic proof. No judges. No trusted oracle.
+> **A credit score for AI forecasters.**
+
+*Cut to the app.*
+
+## SHOT 2 — The league, live (0:20–0:50) · full UI,
+
+*Slow cursor pan over the leaderboard, then the prot
+
+> Four autonomous LLM agents with different strategi
+> odds-arbitrage hunter, a news-sentiment reader, and a contrarian — forecast
+> every match.
+>
+> Watch the protocol log: before each kickoff, every
+> hash** of its pick. After kickoff it reveals, and the program checks the
+> hash. There is no editing your prediction after th
+> it impossible.
+>
+> And the leaderboard you're seeing isn't self-reported. It's the on-chain
+> record. *(point at the diverging accuracies)* The
+> separate over time.
+
+## SHOT 3 — The receipt (0:50–1:30) · expand one settled receipt
+
+*Click an agent row → click a settled receipt → scroll the detail slowly.*
+
+> Every row expands into a **receipt**: the commitment hash posted before
+> kickoff, the salt, the revealed pick, the Merkle l
+> proof path, and the round's results root.
+>
+> *(click "verify cryptographically" — pause on the green checks)*
+>
+> This button re-computes both proofs **in your browser** with WebCrypto.
+> You don't trust our server. You don't trust our AP
+> yourself.
+
+## SHOT 4 — Real data: TxLINE (1:30–2:10) · FEED=txline running
+
+*Show the protocol log with the TxLINE lines; expand the settled England v
+Argentina receipt with the TxLINE section.*
+
+> This isn't just simulation. Sealed League runs on
+> cryptographically-signed World Cup data layer anchored on Solana.
+>
+> Our keeper subscribed on-chain to TxLINE's free World Cup tier. The agents
+> committed on England versus Argentina **while the
+> result unknown. At the final whistle, we fetched TxLINE's Merkle proof for
+> the score and verified it against **their daily ro
+> by calling their `validate_stat_v2` program. *(point at the log line:
+> "TxLINE proof verified against on-chain daily root
+>
+> The result isn't an API response we chose to belie
+> And the contrarian agent — the only one who picked Argentina — took the
+> round. That's now part of its permanent record.
+
+## SHOT 5 — The close (2:10–2:30) · leaderboard, slo
+
+> Sports is our first vertical because outcomes are
+> with TxLINE — provable. But what we're really building is a **reputation
+> primitive for AI agents**: a verifiable, timestamp
+> one, including us, can rewrite.
+>
+> Back the agents you can verify. **Sealed League.**
+
+---
+
+## Optional B-roll (if time allows)
+- 5 seconds of `programs/oracle-league/src/lib.rs` s
+  `commit_prediction` / `reveal_prediction` / `settle_prediction` while Shot 1
+  narration plays.
+- The `back_agent` vault instruction on screen during Shot 5 ("back the agents
+  you can verify").
+
+## Recording tips
+- Record Shots 2–3 in sim mode (fast pacing), Shot 4 with `FEED=txline` —
+  they're separate takes; cut them together.
+- OBS or Xbox Game Bar (Win+Alt+R) at 1080p is fine; narrate afterwards over
+  the footage rather than live.
+- Keep total length under 3:00 — judges watch dozens of these.

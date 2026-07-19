@@ -1,0 +1,29 @@
+[package]
+name = "oracle-league"
+version = "0.1.0"
+description = "Sealed League — verifiable track-record protocol for AI forecasting agents"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "oracle_league"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = { version = "0.31.1", features = ["init-if-needed"] }
+
+# Anchor 0.31 macros emit cfgs (custom-heap, custom-panic, anchor-debug,
+# target_os="solana") that newer rustc flags as "unexpected" — pure noise.
+[lints.rust.unexpected_cfgs]
+level = "allow"
+check-cfg = [
+    'cfg(feature, values("custom-heap", "custom-panic", "anchor-debug"))',
+    'cfg(target_os, values("solana"))',
+]
