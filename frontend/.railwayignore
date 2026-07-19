@@ -1,0 +1,4 @@
+node_modules/
+dist/
+walkthrough-video/
+*.log

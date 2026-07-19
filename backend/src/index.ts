@@ -13,6 +13,8 @@
 import "./env.js"; // must stay first: loads .env before other modules read process.env
 import express from "express";
 import { randomBytes } from "crypto";
+import { existsSync } from "fs";
+import path from "path";
 import { AGENTS, forecast } from "./agents.js";
 import { createChain, Chain, ChainAgentRef, START_BANKROLL } from "./chain.js";
 import { generateRound, simulateResult, seedFeed } from "./feed.js";
@@ -218,30 +220,38 @@ process.on("uncaughtException", (err: any) => {
 
 const app = express();
 
-// CORS: the frontend runs on a different port/process.
+// CORS: the frontend may run on a different port/process (local dev).
 app.use((_req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", process.env.WEB_ORIGIN ?? "*");
   res.setHeader("Access-Control-Allow-Methods", "GET");
   next();
 });
 
-// Friendly root: this process is API-only; the dashboard runs on WEB_PORT.
-app.get("/", (_req, res) => {
-  const webPort = process.env.WEB_PORT ?? 8080;
-  res
-    .type("html")
-    .send(
-      `<body style="font-family:system-ui;background:#0e0a14;color:#f2ecf9;padding:40px">
-        <h2>⚡ Sealed League API — running</h2>
-        <p>This port serves the API only. State: <a style="color:#ffb454" href="/api/state">/api/state</a></p>
-        <p>The dashboard UI is at <a style="color:#ffb454" href="http://localhost:${webPort}">http://localhost:${webPort}</a></p>
-      </body>`,
-    );
-});
-
 app.get("/api/state", (_req, res) => {
   res.json(state);
 });
+
+// Single-service hosting: if a frontend build is present in backend/public
+// (built with VITE_API_BASE=""), serve the dashboard from this process.
+// Otherwise show the friendly API-only page (local dev runs Vite separately).
+const publicDir = path.join(import.meta.dirname, "..", "public");
+if (existsSync(path.join(publicDir, "index.html"))) {
+  app.use(express.static(publicDir));
+  app.get("*", (_req, res) => res.sendFile(path.join(publicDir, "index.html")));
+} else {
+  app.get("/", (_req, res) => {
+    const webPort = process.env.WEB_PORT ?? 8080;
+    res
+      .type("html")
+      .send(
+        `<body style="font-family:system-ui;background:#0e0a14;color:#f2ecf9;padding:40px">
+          <h2>⚡ Sealed League API — running</h2>
+          <p>This port serves the API only. State: <a style="color:#ffb454" href="/api/state">/api/state</a></p>
+          <p>The dashboard UI is at <a style="color:#ffb454" href="http://localhost:${webPort}">http://localhost:${webPort}</a></p>
+        </body>`,
+      );
+  });
+}
 
 app.listen(PORT, () => {
   console.log(
